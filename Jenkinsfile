@@ -6,6 +6,7 @@ pipeline {
     }
 
     stages {
+
         stage('Build') {
             steps {
                 bat 'mvn package'
@@ -17,4 +18,6 @@ pipeline {
                 bat 'mvn test'
             }
         }
+
     }
+}

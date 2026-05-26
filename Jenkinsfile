@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven'
+    }
+
     environment {
         APP_PORT = '9090'
     }
@@ -23,15 +27,6 @@ pipeline {
             steps {
                 bat "mvn test"
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Build SUCCESS'
-        }
-        failure {
-            echo 'Build FAILED'
         }
     }
 }

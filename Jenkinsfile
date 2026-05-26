@@ -1,22 +1,20 @@
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    APP_PORT ='9090'
-  }
-
-  stages {
-    stage('Build') {
-      steps {
-        bat 'mvn package'
-      }
+    environment {
+        APP_PORT = '9090'
     }
 
-    stage('Unit Test') {
-      steps {
-        bat 'mvn test'
-      }
-    }
-  }
-}
+    stages {
+        stage('Build') {
+            steps {
+                bat 'mvn package'
+            }
+        }
 
+        stage('Unit Test') {
+            steps {
+                bat 'mvn test'
+            }
+        }
+    }

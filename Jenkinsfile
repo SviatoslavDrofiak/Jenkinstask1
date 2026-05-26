@@ -2,11 +2,8 @@ pipeline {
     agent any
 
     tools {
+        jdk 'JDK17'
         maven 'Maven'
-    }
-
-    environment {
-        APP_PORT = '9090'
     }
 
     stages {

@@ -1,3 +1,17 @@
+Чудово, тепер структура твого проєкту як на долоні. Бачу, ти вже додав Lombok версії 1.18.32, але збірка все одно падає через конфігурацію самого Maven-плагіна та залишкові конфлікти.
+
+Давай приберемо всі підводні камені. В твоєму поточному pom.xml є три проблеми, які заважають йому скомпілюватися на Java 21:
+
+Версія Java в properties: У тебе все ще зашито <java.version>1.8</java.version>. Компілятор намагається зібрати проєкт під стародавню Java 8, використовуючи при цьому нове оточення Java 21.
+
+Дубльована залежність: Як і казав лог раніше, spring-boot-starter-data-jpa прописаний двічі підряд (рядки 90-99).
+
+Область видимості (scope) Lombok: Для Lombok бажано використовувати <scope>provided</scope>, а не compile, щоб він не тягнувся у готовий .war файл.
+
+🛠️ Готовий, виправлений pom.xml
+Ось повністю виправлений варіант твого файлу. Скопіюй його весь, замініть ним свій вміст на GitHub і збережи зміни (Commit):
+
+XML
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
@@ -15,8 +29,7 @@
     <properties>
         <application.password>My_Pass</application.password>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
-    </properties>
+        <java.version>21</java.version> </properties>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -35,26 +48,19 @@
         </repository>
     </repositories>
 
-
     <dependencies>
-
-        <!-- - - - - - Test - - - - - -->
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <!--            <version>5.9.1</version>-->
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <!--        <version>5.9.1</version>-->
             <scope>test</scope>
         </dependency>
-
-        <!-- - - - - - DB - - - - - -->
 
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -65,8 +71,6 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
-
-        <!-- - - - - - Spring - - - - - -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -85,21 +89,7 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
-        <!--
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        -->
+            <artifactId>spring-boot-starter-data-jpa</artifactId> </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -112,14 +102,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-        <!-- Need this to compile JSP -->
-        <!--
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-        </dependency>
-        -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -137,17 +119,14 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.32</version>
-            <scope>compile</scope>
-        </dependency>
+            <scope>provided</scope> </dependency>
 
-        <!-- - - - - - Rest - - - - - -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>4.10.0</version>
         </dependency>
 
-        <!-- - - - - - JSON - - - - - -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -169,10 +148,8 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                <version>3.11.0</version> <configuration>
+                    <source>21</source> <target>21</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>

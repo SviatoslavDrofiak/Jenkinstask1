@@ -8,13 +8,26 @@ environment {
 stages {
     stage('Build') {
         steps {
-            sh 'mvn clean package -DskipTests'
+            script {
+
+                if (isUnix()) {
+                    sh 'mvn clean package -DskipTests'
+                } else {
+                    bat 'mvn clean package -DskipTests'
+                }
+            }
         }
     }
 
     stage('Unit Test') {
         steps {
-            sh 'mvn test'
+            script {
+                if (isUnix()) {
+                    sh 'mvn test'
+                } else {
+                    bat 'mvn test'
+                }
+            }
         }
     }
 }

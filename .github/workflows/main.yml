@@ -30,9 +30,9 @@ jobs:
         run: 'if grep -q "Tests run: 4, Failures: 0" /local/jenkinsHome/jobs/job/builds/1/log;  then exit 0; else exit 1; fi'
       - name: Check add Contacts
         run: 'if grep -q "@Test checkAddContacts()" /local/jenkinsHome/jobs/job/builds/1/log;  then exit 0; else exit 1; fi'
-      - name: Final Step
-        env:
-          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
-        run: |
-          gh repo edit $GITHUB_REPOSITORY --visibility private --accept-visibility-change-consequences
+      #- name: Final Step
+        #env:
+          #GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+        #run: |
+          #gh repo edit $GITHUB_REPOSITORY --visibility private --accept-visibility-change-consequences
     

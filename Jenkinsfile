@@ -1,35 +1,26 @@
 pipeline {
-agent any
+    agent any
 
-environment {
-    APP_PORT = '9090'
-}
+    tools {
+        jdk 'JDK17'
+        maven 'Maven3'
+    }
 
-stages {
-    stage('Build') {
-        steps {
-            script {
+    environment {
+        APP_PORT = '9090'
+    }
 
-                if (isUnix()) {
-                    sh 'mvn clean package -DskipTests'
-                } else {
-                    bat 'mvn clean package -DskipTests'
-                }
+    stages {
+
+        stage('Build') {
+            steps {
+                bat 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Unit Test') {
+            steps {
+                bat 'mvn test'
             }
         }
     }
-
-    stage('Unit Test') {
-        steps {
-            script {
-                if (isUnix()) {
-                    sh 'mvn test'
-                } else {
-                    bat 'mvn test'
-                }
-            }
-        }
-    }
-}
-
-}

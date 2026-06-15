@@ -7,6 +7,13 @@ pipeline {
 
     stages {
 
+        stage('Check Environment') {
+            steps {
+                sh 'java -version'
+                sh 'mvn -v'
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'mvn clean package -DskipTests'
@@ -17,6 +24,12 @@ pipeline {
             steps {
                 sh 'mvn test'
             }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline finished'
         }
     }
 }

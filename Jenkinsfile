@@ -6,17 +6,17 @@ pipeline {
     }
 
     stages {
-
         stage('Build') {
             steps {
-                bat 'mvn clean package -DskipTests'
+                sh 'mvn clean package -DskipTests'
             }
         }
 
         stage('Unit Test') {
             steps {
-                bat 'mvn test'
+                sh 'mvn test'
             }
         }
     }
+}
 }

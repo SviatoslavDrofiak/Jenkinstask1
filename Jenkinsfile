@@ -1,27 +1,22 @@
 pipeline {
-    agent any
+agent any
 
-    environment {
-        APP_PORT = '9090'
-    }
+environment {
+    APP_PORT = '9090'
+}
 
-    tools {
-        jdk 'JDK17'
-        maven 'Maven3'
-    }
-
-    stages {
-
-        stage('Build') {
-            steps {
-                bat 'mvn clean package -DskipTests'
-            }
-        }
-
-        stage('Unit Test') {
-            steps {
-                bat 'mvn test || exit 0'
-            }
+stages {
+    stage('Build') {
+        steps {
+            sh 'mvn clean package -DskipTests'
         }
     }
+
+    stage('Unit Test') {
+        steps {
+            sh 'mvn test'
+        }
+    }
+}
+
 }
